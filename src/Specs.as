@@ -345,6 +345,8 @@ public class Specs {
 		["change %m.var by %n",								" ", 9, CHANGE_VAR],
 		["show variable %m.var",							" ", 9, "showVariable:"],
 		["hide variable %m.var",							" ", 9, "hideVariable:"],
+		["save %m.var to disk with name %s",							" ", 9, "primSaveToLocalStorage:as:"],
+		["load %m.var from disk with name %s",							" ", 9, "primLoadFromLocalStorage:as:"],
 
 		// lists
 		["add %s to %m.list",								" ", 12, "append:toList:"],

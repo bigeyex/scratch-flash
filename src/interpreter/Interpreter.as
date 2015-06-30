@@ -56,7 +56,8 @@
 // Delay times are rounded to milliseconds, and the minimum delay is a millisecond.
 
 package interpreter {
-	import flash.utils.Dictionary;
+import flash.net.SharedObject;
+import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	import flash.geom.Point;
 	import blocks.*;
@@ -460,6 +461,8 @@ public class Interpreter {
 		primTable[Specs.SET_VAR]		= primVarSet;
 		primTable[Specs.CHANGE_VAR]		= primVarChange;
 		primTable[Specs.GET_PARAM]		= primGetParam;
+		primTable['primSaveToLocalStorage:as:'] = primSaveToLocalStorage;
+		primTable['primLoadFromLocalStorage:as:'] = primLoadFromLocalStorage;
 
 		// edge-trigger hat blocks
 		primTable["whenDistanceLessThan"]	= primNoop;
@@ -695,6 +698,29 @@ public class Interpreter {
 		}
 		var oldvalue:* = v.value;
 		v.value = arg(b, 1);
+		return v;
+	}
+
+	private function primSaveToLocalStorage(b:Block):void {
+		var so:SharedObject = SharedObject.getLocal("scratch-flash");
+		if(arg(b,1)== '' || arg(b,0)== ''){
+			return;
+		}
+		so.data[arg(b, 1)] = activeThread.target.varCache[arg(b, 0)].value;
+		so.flush();
+	}
+
+	private function primLoadFromLocalStorage(b:Block):Variable {
+		var so:SharedObject = SharedObject.getLocal("scratch-flash");
+		var v:Variable = activeThread.target.varCache[arg(b, 0)];
+		if(arg(b,1)== '' || arg(b,0)== ''){
+			return v;
+		}
+		if (!v) {
+			v = activeThread.target.varCache[arg(b, 0)] = activeThread.target.lookupOrCreateVar(arg(b, 0));
+			if (!v) return null;
+		}
+		v.value = so.data[arg(b, 1)];
 		return v;
 	}
 
