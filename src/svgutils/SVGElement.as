@@ -237,7 +237,7 @@ public class SVGElement {
 		const useEmbeddedFont:Boolean = true;
 		if (!text) return;
 		var fmt:TextFormat = new TextFormat(
-			getAttribute('font-family', 'Helvetica'),
+			getAttribute('font-family', 'Simsun'),
 			getAttribute('font-size', 18),
 			0, // textColor is set below
 			(getAttribute('font-weight') == 'bold'),
@@ -245,12 +245,13 @@ public class SVGElement {
 		);
 		if (useEmbeddedFont) {
 			if (!hasEmbeddedFont(fmt.font)) {
-				setAttribute('font-family', 'Helvetica');
-				fmt.font = 'Helvetica';
+				setAttribute('font-family', 'Simsun');
+				fmt.font = 'Simsun';
 			}
 			tf.embedFonts = true;
 			tf.antiAliasType = AntiAliasType.ADVANCED;
 		}
+		setAttribute('font-family', 'Simsun');
 		tf.defaultTextFormat = fmt;
 		tf.text = text;
 		tf.width = tf.textWidth + 6;

@@ -24,12 +24,14 @@ package svgeditor.objs
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
-	import flash.text.AntiAliasType;
+import flash.system.IME;
+import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
+import flash.text.TextFormat;
 
-	import svgeditor.objs.ISVGEditable;
+import svgeditor.objs.ISVGEditable;
 
 	import svgutils.SVGDisplayRender;
 	import svgutils.SVGElement;
@@ -43,11 +45,18 @@ package svgeditor.objs
 			element = elem;
 			if (element.text == null) element.text = '';
 			_editable = false;
-			antiAliasType = AntiAliasType.ADVANCED;
-			cacheAsBitmap = true;
-			embedFonts = true;
+//			antiAliasType = AntiAliasType.ADVANCED;
+			cacheAsBitmap = false;
+			embedFonts = false;
+//			defaultTextFormat = new TextFormat("宋体", 16);
+
 			backgroundColor = 0xFFFFFF;
 			multiline = true;
+			addEventListener(FocusEvent.FOCUS_IN, focusHandler);
+		}
+
+		private function focusHandler(e:Event){
+			IME.enabled = true;
 		}
 
 		public function getElement():SVGElement {
